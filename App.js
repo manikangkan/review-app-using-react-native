@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import Drawer from "./routes/Drawer";
+
+const getFont = () => {
+  Font.loadAsync({
+    "lato-black": require("./assets/fonts/LatoBlack.ttf"),
+    "lato-regular": require("./assets/fonts/LatoRegular.ttf"),
+  });
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  const [fontsLoaded, setFontsLoaded] = React.useState(false);
+  if (fontsLoaded) {
+    return <Drawer />;
+  } else {
+    return (
+      <AppLoading
+        startAsync={getFont}
+        onFinish={() => setFontsLoaded(true)}
+        onError={console.warn}
+      />
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
 });
